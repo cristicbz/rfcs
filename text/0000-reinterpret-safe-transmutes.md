@@ -67,13 +67,12 @@ safe, however, we need the following need to be true of a `Reinterpret` type:
      allow modifying private fields, which is considered [unsafe][ref-unsafety].
   3. The type must be defined with the `#[repr(packed)]` attribute. This is for
      two reasons:
-
-       a. First, Rust's default struct layout is undefined, so a type needs to
-          be at least `#[repr(C)]` to not invoke undefined behaviour when
-          reinterpreting it as an array of bytes.
-       b. Second, reading out of and writing to the padding fields of a struct
-          is undefined behaviour. LLVM is allowed to put its register spill into
-          the padding of a struct stored on stack.
+       * First, Rust's default struct layout is undefined, so a type needs to
+         be at least `#[repr(C)]` to not invoke undefined behaviour when
+         reinterpreting it as an array of bytes.
+       * Second, reading out of and writing to the padding fields of a struct
+         is undefined behaviour. LLVM is allowed to put its register spill into
+         the padding of a struct stored on stack.
 
   4. All its members must also be `Reinterpret`. Otherwise we could clobber a
      member's type private members, or otherwise mess up its invariants.
